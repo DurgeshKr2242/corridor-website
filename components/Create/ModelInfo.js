@@ -7,19 +7,31 @@ import Chart from "chart.js/auto";
 import { useGlobalAuthContext } from "/context/AuthContext";
 // import Data from "../data.csv"
 const ModelInfo = () => {
-  const { data, setData, value, setValue } = useGlobalAuthContext();
+  const { data, setData, value, setValue, keys, setKeys } =
+    useGlobalAuthContext();
+  const [dropdownActive, setDropdownActive] = useState(false);
+
   // const [data, setData] = useState(null);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    setData(null);
+    setKeys([]);
 
-    Papa.parse(file, {
-      download: true,
-      header: true,
-      complete: (result) => {
-        setData(result.data);
-      },
-    });
+    try {
+      Papa.parse(file, {
+        download: true,
+        header: true,
+        complete: (result) => {
+          const keys = [];
+          Object.keys(result.data[0]).forEach((key) => {
+            keys.push(key);
+          });
+          setKeys(keys);
+          setData(result.data);
+        },
+      });
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -109,21 +121,80 @@ const ModelInfo = () => {
             </p>
           </div>
           <div className="flex flex-col items-start justify-start w-full">
-            <div>
-              <label
-                htmlFor="file"
-                className="px-4 py-1 text-white cursor-pointer bg-Blue rounded-standard/4"
-              >
-                choose your csv file
-              </label>
-              <input
-                id="file"
-                className="hidden"
-                type="file"
-                accept=".csv"
-                onChange={handleFileUpload}
-              />
-            </div>
+            {keys?.length == 0 ? (
+              <div>
+                <label
+                  htmlFor="file"
+                  className="px-4 py-1 text-white cursor-pointer bg-Blue rounded-standard/4"
+                >
+                  choose your csv file
+                </label>
+                <input
+                  id="file"
+                  className="hidden"
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileUpload}
+                />
+              </div>
+            ) : (
+              <>
+                <p className="opacity-80">Your file has been selected.</p>
+                <p>Select the fields for which you want to generate graphs</p>
+                <button
+                  id="dropdownCheckboxButton"
+                  // data-dropdown-toggle="dropdownDefaultCheckbox"
+                  onClick={() => setDropdownActive(!dropdownActive)}
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  type="button"
+                >
+                  Dropdown checkbox{" "}
+                  <svg
+                    class="w-4 h-4 ml-2"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+                {dropdownActive && (
+                  <ul
+                    class="p-3 space-y-3 text-sm text-gray-800 bg-bgBlackSec"
+                    aria-labelledby="dropdownCheckboxButton"
+                  >
+                    {keys.map((item, i) => {
+                      return (
+                        <li key={i}>
+                          <div class="flex items-center">
+                            <input
+                              id="checkbox-item-1"
+                              type="checkbox"
+                              value=""
+                              class="w-4 h-4 text-blue-600   rounded focus:ring-blue-600 ring-offset-gray-700 focus:ring-offset-gray-700 focus:ring-2 bg-gray-600 border-gray-500"
+                            />
+                            <label
+                              for="checkbox-item-1"
+                              class="ml-2 text-sm font-medium text-gray-300"
+                            >
+                              {item}
+                            </label>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </>
+            )}
+
             <div className="h-[30rem] w-[30rem] py-10   ">
               <canvas id="barChart" width="10" height="10"></canvas>
             </div>

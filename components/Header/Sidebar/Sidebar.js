@@ -12,7 +12,7 @@ const Sidebar = () => {
         <p className="text-3xl font-bold text-center">FP Doc</p>
       </div>
       <div className="flex flex-col items-start justify-start w-full gap-4 font-semibold text- text-White">
-        <button
+        {/* <button
           onClick={() => router.push("/")}
           className="flex items-center w-full gap-3 px-4 py-3 text-left text-white capitalize cursor-pointer rounded-standard/2 bg-Blue"
         >
@@ -20,10 +20,10 @@ const Sidebar = () => {
             <HiHome />
           </p>
           <p>Home</p>
-        </button>
+        </button> */}
         <button
           onClick={() => router.push("/create")}
-          className="flex items-center w-full gap-3 px-4 py-3 text-left capitalize cursor-pointer hover:bg-Blue/40 rounded-standard/2 "
+          className="flex items-center w-full gap-3 px-4 py-3 text-left text-white capitalize cursor-pointer rounded-standard/2 bg-Blue"
         >
           <p className="text-xl">
             <IoCreate />
@@ -40,6 +40,25 @@ const Sidebar = () => {
           </p>
           <p>History</p>
         </button>
+        <button
+          onClick={() => router.push("/")}
+          className="flex items-center w-full gap-3 px-4 py-3 text-left capitalize cursor-pointer hover:bg-Blue/40 rounded-standard/2 "
+        >
+          <p className="text-xl">
+            <MdHistory />
+          </p>
+          <p>History</p>
+        </button>
+        <button
+          onClick={() => router.push("/")}
+          className="flex items-center w-full gap-3 px-4 py-3 text-left capitalize cursor-pointer hover:bg-Blue/40 rounded-standard/2 "
+        >
+          <p className="text-xl">
+            <MdHistory />
+          </p>
+          <p>History</p>
+        </button>
+
         {/* <Input /> */}
       </div>
     </div>

@@ -14,6 +14,7 @@ const ViewDoc = () => {
     setData,
     value,
     setValue,
+    componentRef,
   } = useGlobalAuthContext();
   useEffect(() => {
     const ctx = document.getElementById("barChartforShowDoc").getContext("2d");
@@ -117,7 +118,10 @@ const ViewDoc = () => {
 
   return (
     <>
-      <div className="w-full p-6 bg-bgBlack rounded-standard">
+      <div
+        ref={componentRef}
+        className="w-full p-6 bg-bgBlack rounded-standard"
+      >
         <p className="text-lg font-bold underline">
           Standard Publicly Available Information
         </p>

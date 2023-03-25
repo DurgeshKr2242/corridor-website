@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useRouter } from "next/router";
 
 const AuthContext = React.createContext();
@@ -13,6 +13,14 @@ const AuthProvider = ({ children }) => {
   const [editorState3, setEditorState3] = useState(null);
   const [data, setData] = useState(null);
   const [value, setValue] = useState(0);
+  const [keys, setKeys] = useState([]);
+  const componentRef = useRef();
+
+  useEffect(() => {
+    if (router.asPath == "/") {
+      router.push("/create");
+    }
+  }, [router]);
 
   //? functions
   function setCookie(cname, cvalue, exdays) {
@@ -67,6 +75,9 @@ const AuthProvider = ({ children }) => {
         setData,
         value,
         setValue,
+        keys,
+        setKeys,
+        componentRef,
       }}
     >
       {children}
